@@ -6,9 +6,9 @@ router.post('/login', async (req, res) => {
     if (req?.body?.name === undefined)
         return res.sendStatus(400);
     const name = req.body.name;
-    if (data.user.userExists(name))
+    if (await data.user.userExists(name))
         return res.sendStatus(401);
-    data.user.registerUser(name);
+    await data.user.registerUser(name);
     return res.cookie("name", name).sendStatus(200);
 });
 
@@ -16,9 +16,12 @@ router.get('/points', async (req, res) => {
     if (req?.cookies?.name === undefined)
         return res.sendStatus(400);
     const name = req.cookies.name;
-    if (!data.user.userExists(name))
+    if (!await data.user.userExists(name))
         return res.sendStatus(404);
-    return res.send(String(data.user.getPointsByName(name)));
+    return res.send({
+        name: name,
+        points: await data.user.getPointsByName(name)
+    });
 });
 router.post('/points', async (req, res) => {
     if (req?.cookies?.name === undefined)
@@ -26,9 +29,13 @@ router.post('/points', async (req, res) => {
     if (req?.body?.points === undefined)
         return res.sendStatus(400);
     const name = req.cookies.name;
-    const points = req.cookies.points;
-    if (!data.user.userExists(name))
+    const points = req.body.points;
+    if (!await data.user.userExists(name))
         return res.sendStatus(404);
-    return res.send(data.user.updateScore(name, points) ? "Updated" : "Not Updated");
+    return res.send((await data.score.updateScore(name, points)) ? "Updated" : "Not Updated");
+});
+
+router.get('/scoreboard', async (req, res) => {
+    return res.send(await data.score.getScoreBoard());
 });
 module.exports = router;
