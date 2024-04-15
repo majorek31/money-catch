@@ -7,6 +7,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
     <style>
         * {
             font-family: "Press Start 2P", system-ui;
@@ -43,12 +44,18 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>Money Catch</h1>
-    </header>
-    <main>
-        <div id="scoreboard"></div>
-    </main>
+    <div class="container">
+        <header>
+            <h1>Money Catch</h1>
+        </header>
+        <main>
+            <div id="scoreboard"></div>
+        </main>
+        <footer>
+            <p>Jakub Kuczera & Maksymilian Borucki</p>
+        </footer>
+    </div>
+
     <script>
         async function fetchFromApi(endpoint, data) {
             if (window.location.port == 8080) {
