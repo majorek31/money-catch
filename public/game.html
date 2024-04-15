@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Catch</title>
+    <style>
+        #game {
+            margin: 0 auto;
+            border: 1px solid black;
+            width: 1200px;
+            height: 786px;
+            margin-top: 50px;
+        }
+
+        #player {
+            position: relative;
+            background-color: red;
+            width: 120px;
+            height: 30px;
+            top: 750px;
+            left: 480px;
+        }
+
+        .money {
+            position: absolute;
+            width: 25px;
+            height: 50px;
+            background-color: blue;
+        }
+        h1 {
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="score">0</h1>
+    <div id="game">
+        <!-- <div class="money"></div> -->
+        <div id="player"></div>
+    </div>
+    <script>
+        const game = document.getElementById("game");
+        const player = document.getElementById("player");
+        const scoreDisplayer = document.getElementById("score");
+        const PLAYER_MOVE_SPEED = 15;
+        let score = 0;
+        let moneyFallRate = 3;
+        let isGameOver = false;
+        lastSpawnedTime = Date.now();
+        playerPos = 480;
+        async function fetchFromApi(endpoint, data) {
+            if (window.location.port == 8080) {
+                const response = await fetch(endpoint);
+                return await response.json();
+            } else {
+                const response = await fetch("http://localhost:8080/" + endpoint);
+                return await response.json();
+            }
+        }
+        function getRandomValue(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+        const is_key_down = (() => {
+            const state = {};
+            window.addEventListener('keyup', (e) => state[e.key] = false);
+            window.addEventListener('keydown', (e) => state[e.key] = true);
+            return (key) => state.hasOwnProperty(key) && state[key] || false;
+        })();
+        function canPlayerMove(offset) {
+            const gameRect = game.getBoundingClientRect();
+            const playerRect = player.getBoundingClientRect();
+            if (playerRect.x + offset <= gameRect.x)
+                return false;
+            if (playerRect.x + playerRect.width + offset >= gameRect.width + gameRect.x)
+                return false;
+            return true;
+        }
+        function movePlayer(offset) {
+            if (!canPlayerMove(offset))
+                return;
+            playerPos += offset;
+            player.style.left = `${playerPos}px`;
+        }
+        function handleMovement() {
+            if (is_key_down("ArrowLeft")) {
+                movePlayer(-PLAYER_MOVE_SPEED);
+            }
+            else if (is_key_down("ArrowRight")) {
+                movePlayer(PLAYER_MOVE_SPEED);
+            }
+        }
+        function checkForPlayerCollisionMoney(moneyRect) {
+            playerRect = player.getBoundingClientRect();
+            if (
+                playerRect.left < moneyRect.right &&
+                playerRect.right > moneyRect.left &&
+                playerRect.top < moneyRect.bottom &&
+                playerRect.bottom > moneyRect.top
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function spawnNewMoney() {
+            if (Date.now() - lastSpawnedTime < 1000) {
+                return;
+            }
+            lastSpawnedTime = Date.now();
+            const gameRect = game.getBoundingClientRect();
+            const minX = gameRect.x;
+            const maxX = gameRect.x + gameRect.width - 50;
+            const posX = getRandomValue(minX, maxX);
+            const element = document.createElement("div");
+            element.className = "money";
+            element.style.left = `${posX}px`;
+            game.append(element);
+        }
+        function updateMoney() {
+            const moneyList = Array.from(document.getElementsByClassName("money"));
+            spawnNewMoney();
+            moneyList.forEach(moneyObject => {
+                const moneyRect = moneyObject.getBoundingClientRect();
+                const gameRect = game.getBoundingClientRect();
+                const currentTop = parseFloat(getComputedStyle(moneyObject).top);
+                moneyObject.style.top = `${currentTop + moneyFallRate}px`;
+                if (moneyRect.top >= gameRect.y + gameRect.height) {
+                    isGameOver = true;
+                }
+                if (checkForPlayerCollisionMoney(moneyRect)){
+                    score++;
+                    moneyObject.remove();
+                }
+            });
+            
+        }
+        function updateUI() {
+            scoreDisplayer.innerText = score;
+        }
+        function handleGameOver() {
+            const moneyList = Array.from(document.getElementsByClassName("money"));
+            moneyList.forEach(item => {
+                item.remove();
+            });
+            scoreDisplayer.innerText = `Game over! ${score}`;
+        }
+        ((async) => {
+            spawnNewMoney();
+            const gameIntervalId = setInterval(() => {
+                if (!isGameOver) {
+                    handleMovement();
+                    updateMoney();
+                    updateUI();
+                } else {
+                    handleGameOver();
+                    clearInterval(gameIntervalId);
+                }
+            }, 10);
+        })();
+    </script>
+</body>
+
+</html>

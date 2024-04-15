@@ -5,6 +5,10 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
+app.use((req, res, next) => {
+    res.set("X-Server", "express");
+    next();
+});
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(bodyParser.json());
 app.use(cookieParser());
