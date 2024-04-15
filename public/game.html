@@ -6,12 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Money Catch</title>
     <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
         #game {
             margin: 0 auto;
             border: 1px solid black;
             width: 1200px;
             height: 786px;
-            margin-top: 50px;
         }
 
         #player {
@@ -152,6 +155,8 @@
         ((async) => {
             spawnNewMoney();
             const gameIntervalId = setInterval(() => {
+                if (!document.hasFocus())
+                    return;
                 if (!isGameOver) {
                     handleMovement();
                     updateMoney();
