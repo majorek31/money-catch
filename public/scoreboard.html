@@ -78,7 +78,7 @@
         (async () => {
             if (await !isLoggedIn())
                 location = "index.html"
-            const data = await fetchFromApi("/api/scoreboard");
+            const data = await (await fetchFromApi("/api/scoreboard")).json();
             data.forEach(entry => {
                 addRecord(entry.name, entry.points);
             });
