@@ -3,7 +3,7 @@ const loginInput = myForm.login;
 const btn = document.querySelector("#btn")
 const loginDiv = document.querySelector("#loginDiv")
 async function fetchFromApi(endpoint, data) {
-    if (window.location.port == 8080) {
+    if (window.location.port == 80) {
         const response = await fetch(endpoint, data);
         return response;
     } else {

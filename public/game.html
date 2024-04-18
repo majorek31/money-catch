@@ -71,7 +71,7 @@
         lastSpawnedTime = Date.now();
         playerPos = 480;
         async function fetchFromApi(endpoint, data) {
-            if (window.location.port == 8080) {
+            if (window.location.port == 80) {
                 const response = await fetch(endpoint, data);
                 return response;
             } else {
@@ -197,6 +197,8 @@
                 window.location = "index.html";
             spawnNewMoney();
             const gameIntervalId = setInterval(async() => {
+                if (!document.hasFocus())
+                    return;
                 if (!isGameOver) {
                     handleMovement();
                     updateMoney();
