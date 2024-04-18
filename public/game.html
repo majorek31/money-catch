@@ -71,13 +71,7 @@
         lastSpawnedTime = Date.now();
         playerPos = 480;
         async function fetchFromApi(endpoint, data) {
-            if (window.location.port == 80) {
-                const response = await fetch(endpoint, data);
-                return response;
-            } else {
-                const response = await fetch("http://localhost:8080" + endpoint, data);
-                return response
-            }
+            return await fetch(endpoint, data);
         }
         function getRandomValue(min, max) {
             return Math.random() * (max - min) + min;

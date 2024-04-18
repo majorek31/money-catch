@@ -57,15 +57,9 @@
     </div>
 
     <script>
-        async function fetchFromApi(endpoint, data) {
-            if (window.location.port == 80) {
-                const response = await fetch(endpoint);
-                return await response.json();
-            } else {
-                const response = await fetch("http://localhost:8080/" + endpoint);
-                return await response.json();
-            }
-        }
+    async function fetchFromApi(endpoint, data) {
+        return await fetch(endpoint, data);
+    }
         const scoreboard = document.getElementById("scoreboard");
         function addRecord(name, score) {
             const entry = document.createElement("div");

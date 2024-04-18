@@ -3,13 +3,7 @@ const loginInput = myForm.login;
 const btn = document.querySelector("#btn")
 const loginDiv = document.querySelector("#loginDiv")
 async function fetchFromApi(endpoint, data) {
-    if (window.location.port == 80) {
-        const response = await fetch(endpoint, data);
-        return response;
-    } else {
-        const response = await fetch("http://localhost:8080" + endpoint, data);
-        return response
-    }
+    return await fetch(endpoint, data);
 }
 (async () => {
     myForm.addEventListener("submit", async (e)=> {
