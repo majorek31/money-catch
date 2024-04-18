@@ -6,9 +6,8 @@ router.post('/login', async (req, res) => {
     if (req?.body?.name === undefined)
         return res.sendStatus(400);
     const name = req.body.name;
-    if (await data.user.userExists(name))
-        return res.sendStatus(401);
-    await data.user.registerUser(name);
+    if (!await data.user.userExists(name))
+        await data.user.registerUser(name);
     return res.cookie("name", name).sendStatus(200);
 });
 

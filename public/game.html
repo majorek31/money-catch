@@ -71,11 +71,11 @@
         playerPos = 480;
         async function fetchFromApi(endpoint, data) {
             if (window.location.port == 8080) {
-                const response = await fetch(endpoint);
-                return await response.json();
+                const response = await fetch(endpoint, data);
+                return response;
             } else {
-                const response = await fetch("http://localhost:8080/" + endpoint);
-                return await response.json();
+                const response = await fetch("http://localhost:8080" + endpoint, data);
+                return response
             }
         }
         function getRandomValue(min, max) {
@@ -160,22 +160,39 @@
         function updateUI() {
             scoreDisplayer.innerText = score;
         }
-        function handleGameOver() {
+        async function handleGameOver() {
             const moneyList = Array.from(document.getElementsByClassName("money"));
             moneyList.forEach(item => {
                 item.remove();
             });
-            scoreDisplayer.innerHTML = `Game over!<br> ${score}`;
+            const result = await fetchFromApi("/api/points", {
+                method: 'POST',
+                body: JSON.stringify({
+                    points: score
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+            location = "scoreboard.html"
         }
-        ((async) => {
+        async function isLoggedIn() {
+            const response = await fetchFromApi("/api/points");
+            if (response.status == 404)
+                return false;
+            return true;
+        }
+        (async () => {
+            if (!await isLoggedIn())
+                window.location = "index.html";
             spawnNewMoney();
-            const gameIntervalId = setInterval(() => {
+            const gameIntervalId = setInterval(async() => {
                 if (!isGameOver) {
                     handleMovement();
                     updateMoney();
                     updateUI();
                 } else {
-                    handleGameOver();
+                    await handleGameOver();
                     clearInterval(gameIntervalId);
                 }
             }, 10);

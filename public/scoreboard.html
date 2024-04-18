@@ -75,7 +75,15 @@
             entry.appendChild(h2);
             scoreboard.appendChild(entry);
         }
+        async function isLoggedIn() {
+            const response = await fetchFromApi("/api/points");
+            if (response.status == 404)
+                return false;
+            return true;
+        }
         (async () => {
+            if (await !isLoggedIn())
+                location = "index.html"
             const data = await fetchFromApi("/api/scoreboard");
             data.forEach(entry => {
                 addRecord(entry.name, entry.points);

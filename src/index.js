@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const app = express();
 
@@ -9,6 +10,7 @@ app.use((req, res, next) => {
     res.set("X-Server", "express");
     next();
 });
+app.use(cors());
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(bodyParser.json());
 app.use(cookieParser());
