@@ -40,7 +40,16 @@
             flex-wrap: wrap;
             justify-content: center;
         }
+        button{
+            width: 11rem;
 
+        }
+        .btn{
+            width: 100%;
+            display: flex;
+            text-align: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -48,8 +57,14 @@
         <header>
             <h1>Money Catch</h1>
         </header>
+        <div class="btn">
+            <button id="tryAgain">Spróbuj ponownie</button>
+        </div>
+        
         <main>
+            
             <div id="scoreboard"></div>
+            
         </main>
         <footer>
             <p>Maksymilian Borucki & Jakub Kuczera</p>
@@ -83,6 +98,10 @@
                 addRecord(entry.name, entry.points);
             });
         })();
+
+        const tryAgainBtn = document.querySelector("#tryAgain")
+        tryAgainBtn.addEventListener("click", ()=>{
+            location = game.html})
     </script>
 </body>
 </html>
