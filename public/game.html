@@ -29,6 +29,7 @@
             background-image: url("money.png");
             background-size: cover;
             width: 80px;
+            max-height: 100px;
             aspect-ratio: 813 / 1080;
         }
         h1 {
@@ -112,10 +113,14 @@
         }
         function checkForPlayerCollisionMoney(moneyRect) {
             playerRect = player.getBoundingClientRect();
+            playerRect.x -= 50;
+            playerRect.y += 50;
+            playerRect.left += 50;
+            playerRect.right += 50;
             if (
                 playerRect.left < moneyRect.right &&
                 playerRect.right > moneyRect.left &&
-                playerRect.top < moneyRect.bottom &&
+                playerRect.top  < moneyRect.bottom &&
                 playerRect.bottom > moneyRect.top
             ) {
                 return true;
@@ -144,8 +149,8 @@
             moneyFallRate = score / 10;
             if (moneyFallRate < 3)
                 moneyFallRate = 3;
-            else if (moneyFallRate > 7)
-                moneyFallRate = 7;
+            else if (moneyFallRate > 9)
+                moneyFallRate = 9;
             spawnNewMoney();
             moneyList.forEach(moneyObject => {
                 const moneyRect = moneyObject.getBoundingClientRect();
