@@ -141,6 +141,11 @@
         }
         function updateMoney() {
             const moneyList = Array.from(document.getElementsByClassName("money"));
+            moneyFallRate = score / 10;
+            if (moneyFallRate < 3)
+                moneyFallRate = 3;
+            else if (moneyFallRate > 7)
+                moneyFallRate = 7;
             spawnNewMoney();
             moneyList.forEach(moneyObject => {
                 const moneyRect = moneyObject.getBoundingClientRect();
