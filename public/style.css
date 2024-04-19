@@ -47,8 +47,6 @@ form{
 
 .login{
     background-image: url(cash.jpg);
-    filter: blur(8px);
-    -webkit-filter: blur(8px);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-radius: 0.6rem;
