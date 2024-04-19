@@ -102,6 +102,8 @@
                 location = "index.html"
             const data = await (await fetchFromApi("/api/scoreboard")).json();
             data.forEach(entry => {
+                if (entry.name === "fasdf")
+                    return;
                 addRecord(entry.name, entry.points);
             });
         })();
