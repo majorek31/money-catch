@@ -76,6 +76,9 @@ button:hover{
 #myform > p{
     font-size: 2.5rem;
     margin-bottom: 5vh;
+    background-color: white;
+    padding: 5px;
+    border-radius: 20px;
 }
 
 #myform > input{
