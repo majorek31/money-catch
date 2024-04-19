@@ -145,6 +145,8 @@
                 moneyFallRate = 3;
             else if (moneyFallRate > 9)
                 moneyFallRate = 9;
+            if (score > 100)
+                moneyFallRate = 9;
             spawnNewMoney();
             moneyList.forEach(moneyObject => {
                 const moneyRect = moneyObject.getBoundingClientRect();
