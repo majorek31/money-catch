@@ -29,7 +29,7 @@ router.post('/points', async (req, res) => {
         return res.sendStatus(400);
     const name = req.cookies.name;
     const points = req.body.points;
-    if (poits >= 50000)
+    if (points >= 50000)
         return res.send("ić stond");
     if (!await data.user.userExists(name))
         return res.sendStatus(404);
