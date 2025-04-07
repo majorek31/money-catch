@@ -4,7 +4,9 @@
   "description": "It was created just for existance",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx primsa generate",
+    "start": "node ./src"
   },
   "author": "",
   "license": "ISC",
